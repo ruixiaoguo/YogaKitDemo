@@ -26,58 +26,206 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIScrollView * mainScrollview = [[UIScrollView alloc] init];
-    mainScrollview.pagingEnabled = YES;
-    [self.view addSubview:mainScrollview];
-    [mainScrollview configureLayoutWithBlock:^(YGLayout * _Nonnull layout) {
-        layout.isEnabled = YES;
-        layout.flexDirection  = YGFlexDirectionRow;
-        layout.alignItems = YGAlignStretch;
-        layout.height = YGPointValue([UIScreen mainScreen].bounds.size.height);
-        
+//    UIScrollView * mainScrollview = [[UIScrollView alloc] init];
+//    mainScrollview.pagingEnabled = YES;
+//    [self.view addSubview:mainScrollview];
+//    [mainScrollview configureLayoutWithBlock:^(YGLayout * _Nonnull layout) {
+//        layout.isEnabled = YES;
+//        layout.flexDirection  = YGFlexDirectionRow;
+//        layout.alignItems = YGAlignStretch;
+//        layout.height = YGPointValue([UIScreen mainScreen].bounds.size.height);
+//
+//    }];
+//
+//     contentview0 = [[UIView alloc] init];
+//    contentview0.backgroundColor = [UIColor lightGrayColor];
+//     contentview1  = [[UIView alloc] init];
+//    contentview1.backgroundColor = [UIColor purpleColor];
+//     contentview2 = [[UIView alloc] init];
+//    contentview2.backgroundColor = [UIColor yellowColor];
+//     contentview3 = [[UIView alloc] init];
+//    contentview3.backgroundColor = [UIColor blueColor];
+//
+//    [mainScrollview addSubview:contentview0];
+//    [mainScrollview addSubview:contentview1];
+//    [mainScrollview addSubview:contentview2];
+//    [mainScrollview addSubview:contentview3];
+//
+//    YGLayoutConfigurationBlock configureBlock = ^(YGLayout * layout){
+//        layout.isEnabled = YES;
+//        layout.height   = YGPointValue([UIScreen mainScreen].bounds.size.height);
+//        layout.width   = YGPointValue([UIScreen mainScreen].bounds.size.width);
+//
+//    };
+//    [contentview0 configureLayoutWithBlock:configureBlock];
+//    [contentview1 configureLayoutWithBlock:configureBlock];
+//    [contentview2 configureLayoutWithBlock:configureBlock];
+//    [contentview3 configureLayoutWithBlock:configureBlock];
+//
+//    [self.view configureLayoutWithBlock:^(YGLayout * _Nonnull  layout) {
+//        layout.isEnabled = YES;
+//        layout.justifyContent = YGJustifyCenter;
+//        layout.alignItems     = YGAlignStretch;
+//
+//    }];
+//
+//    [self.view.yoga applyLayoutPreservingOrigin:YES];
+//
+//    mainScrollview.contentSize = CGSizeMake(contentview0.bounds.size.width * 4, contentview0.bounds.size.height);
+//    [self configure];
+//    [self configure2];
+//    [self configure3];
+//    [self configure4];
+//    [self configure5];
+//    [self configure6];
+      [self configure7];
+}
+
+
+//九宫格
+- (void)configure7 {
+    UIView *baseClassView = [[UIView alloc] initWithFrame:CGRectZero];
+    baseClassView.backgroundColor = [UIColor whiteColor];
+    [baseClassView configureLayoutWithBlock:^(YGLayout * layout) {
+       layout.isEnabled = YES;
+       layout.marginTop = YGPointValue(64);
+       layout.width = YGPointValue(self.view.frame.size.width);
+       layout.height = YGPointValue(self.view.frame.size.height);
+       layout.justifyContent = YGJustifyFlexStart;
+       layout.flexDirection = YGFlexDirectionColumn;
     }];
-    
-     contentview0 = [[UIView alloc] init];
-    contentview0.backgroundColor = [UIColor lightGrayColor];
-     contentview1  = [[UIView alloc] init];
-    contentview1.backgroundColor = [UIColor purpleColor];
-     contentview2 = [[UIView alloc] init];
-    contentview2.backgroundColor = [UIColor yellowColor];
-     contentview3 = [[UIView alloc] init];
-    contentview3.backgroundColor = [UIColor blueColor];
-
-    [mainScrollview addSubview:contentview0];
-    [mainScrollview addSubview:contentview1];
-    [mainScrollview addSubview:contentview2];
-    [mainScrollview addSubview:contentview3];
-
-    YGLayoutConfigurationBlock configureBlock = ^(YGLayout * layout){
+    [self.view addSubview:baseClassView];
+    NSArray *arr = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",nil];
+    UIView *templateView = [[UIView alloc] initWithFrame:CGRectZero];
+    templateView.backgroundColor = [UIColor greenColor];
+    [templateView configureLayoutWithBlock:^(YGLayout * layout) {
         layout.isEnabled = YES;
-        layout.height   = YGPointValue([UIScreen mainScreen].bounds.size.height);
-        layout.width   = YGPointValue([UIScreen mainScreen].bounds.size.width);
-        
-    };
-    [contentview0 configureLayoutWithBlock:configureBlock];
-    [contentview1 configureLayoutWithBlock:configureBlock];
-    [contentview2 configureLayoutWithBlock:configureBlock];
-    [contentview3 configureLayoutWithBlock:configureBlock];
-    
-    [self.view configureLayoutWithBlock:^(YGLayout * _Nonnull  layout) {
-        layout.isEnabled = YES;
-        layout.justifyContent = YGJustifyCenter;
-        layout.alignItems     = YGAlignStretch;
-        
+        layout.flexDirection = YGFlexDirectionRow;
+        layout.height = YGPointValue(50*(arr.count/3));
+        layout.width = YGPointValue(self.view.frame.size.width);
+        layout.flexWrap = YGWrapWrap;
     }];
+    [baseClassView addSubview:templateView];
+    
+    for (NSString *str in arr) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+        view.backgroundColor = [UIColor redColor];
+        [view configureLayoutWithBlock:^(YGLayout * layout) {
+            layout.isEnabled = YES;
+            layout.width = YGPointValue(self.view.frame.size.width/3);
+            layout.height = YGPointValue(50);
+        }];
+        [templateView addSubview:view];
+        
+        UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectZero];
+        lbl.text = str;
+        lbl.layer.borderWidth = 1;
+        lbl.textAlignment = NSTextAlignmentCenter;
+        [lbl configureLayoutWithBlock:^(YGLayout * layout) {
+            layout.isEnabled = YES;
+            layout.flexGrow = 1.0;
+//            layout.padding = YGPointValue(0);
+        }];
+        [view addSubview:lbl];
+    }
+    [baseClassView.yoga applyLayoutPreservingOrigin:NO];
+}
 
-    [self.view.yoga applyLayoutPreservingOrigin:YES];
+
+/** 均分 */
+-(void)configure6{
+     UIView *baseClassView = [[UIView alloc] initWithFrame:CGRectZero];
+     baseClassView.backgroundColor = [UIColor whiteColor];
+     [baseClassView configureLayoutWithBlock:^(YGLayout * layout) {
+        layout.isEnabled = YES;
+        layout.marginTop = YGPointValue(64);
+        layout.width = YGPointValue(self.view.frame.size.width);
+        layout.height = YGPointValue(self.view.frame.size.height);
+        layout.justifyContent = YGJustifyFlexStart;
+        layout.flexDirection = YGFlexDirectionColumn;
+     }];
+     [self.view addSubview:baseClassView];
+    //均分view
+     UIView *view1 = [[UIView alloc] initWithFrame:CGRectZero];
+           view1.backgroundColor = [UIColor redColor];
+           [view1 configureLayoutWithBlock:^(YGLayout * layout) {
+               layout.isEnabled = YES;
+               layout.flexGrow = 1.0;
+           }];
+     [baseClassView addSubview:view1];
+           
+       UIView *view2 = [[UIView alloc] initWithFrame:CGRectZero];
+       view2.backgroundColor = [UIColor cyanColor];
+       [view2 configureLayoutWithBlock:^(YGLayout * layout) {
+           layout.isEnabled = YES;
+           layout.flexGrow = 1.0;
+       }];
+       [baseClassView addSubview:view2];
+       
+       UIView *view3 = [[UIView alloc] initWithFrame:CGRectZero];
+       view3.backgroundColor = [UIColor brownColor];
+       [view3 configureLayoutWithBlock:^(YGLayout * layout) {
+           layout.isEnabled = YES;
+           layout.flexGrow = 1.0;
+       }];
+       [baseClassView addSubview:view3];
+       
+       [baseClassView.yoga applyLayoutPreservingOrigin:NO];
+}
+
+/** 自动lable */
+-(void)configure5{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+    view.backgroundColor = [UIColor redColor];
+    [view configureLayoutWithBlock:^(YGLayout * layout) {
+        layout.isEnabled = YES;
+        layout.marginTop = YGPointValue(64);
+        layout.width = YGPointValue(self.view.frame.size.width);
+        layout.height = YGPointValue(self.view.frame.size.width);
+        layout.justifyContent = YGJustifyFlexStart;
+    }];
+    [self.view addSubview:view];
     
-    mainScrollview.contentSize = CGSizeMake(contentview0.bounds.size.width * 4, contentview0.bounds.size.height);
-    [self configure];
-    [self configure2];
-    [self configure3];
-    [self configure4];
+    //测试容器
+    UIView *templateView = [[UIView alloc] initWithFrame:CGRectZero];
+    templateView.backgroundColor = [UIColor yellowColor];
+    [templateView configureLayoutWithBlock:^(YGLayout * layout) {
+        layout.isEnabled = YES;
+        layout.flexDirection = YGFlexDirectionRow;
+        layout.width = YGPointValue(self.view.frame.size.width - 50);
+        layout.height = YGPointValue(100);
+    }];
+    [view addSubview:templateView];
     
+    UILabel *variableLbl = [[UILabel alloc] initWithFrame:CGRectZero];
+    variableLbl.backgroundColor = [UIColor greenColor];
+    variableLbl.text = @"文本";
+    [variableLbl configureLayoutWithBlock:^(YGLayout * layout) {
+        layout.isEnabled = YES;
+        layout.flexGrow = 0;
+    }];
+    [templateView addSubview:variableLbl];
     
+    UIView *tagView = [[UIView alloc] initWithFrame:CGRectZero];
+    tagView.backgroundColor = [UIColor orangeColor];
+    [tagView configureLayoutWithBlock:^(YGLayout * layout) {
+        layout.isEnabled = YES;
+        layout.flexGrow = 1.0;
+        layout.flexDirection = YGFlexDirectionRowReverse;
+    }];
+    [templateView addSubview:tagView];
+    
+    UILabel *variableLbl1 = [[UILabel alloc] initWithFrame:CGRectZero];
+    variableLbl1.backgroundColor = [UIColor yellowColor];
+    variableLbl1.text = @"文本文本文本文本文本";
+    [variableLbl1 configureLayoutWithBlock:^(YGLayout * layout) {
+        layout.isEnabled = YES;
+        layout.flexGrow = 0;
+    }];
+    [tagView addSubview:variableLbl1];
+    
+    [view.yoga applyLayoutPreservingOrigin:NO];
+
 }
 //UIscrollview 自动计算contentsize
 -(void)configure4{
